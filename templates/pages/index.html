@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Create Note Form -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">Create a note</div>
+  <div class="card-body">
+    <form method="post" action="{{ url_for('add') }}" class="row g-3">
+      <div class="col-12">
+        <label class="form-label" for="note_title">Title</label>
+        <input class="form-control" id="note_title" name="note_title" placeholder="Title" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="note_content">Content</label>
+        <textarea class="form-control" id="note_content" name="note_content" rows="3" placeholder="Content" required></textarea>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary">Add note</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Notes List -->
+<h2 class="h4 mb-3">Notes <span class="badge text-bg-secondary">{{ notes|length }}</span></h2>
+{% if notes %}
+  <div class="row g-3">
+    {% for note in notes %}
+      <div class="col-12 col-md-6">
+        <article class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h3 class="card-title h5">{{ note.title }}</h3>
+            <p class="card-text flex-grow-1">{{ note.content }}</p>
+            <form method="post" action="{{ url_for('delete', note_id=note.id) }}" class="mt-2">
+              <button class="btn btn-outline-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        </article>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-secondary">No notes yet</div>
+{% endif %}
+{% endblock %}
