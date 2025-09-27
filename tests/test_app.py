@@ -68,3 +68,52 @@ def test_delete_note(client):
     assert resp.status_code == 200
     assert b"Test Note" not in resp.data
 
+# Test that edit modal data is present in index page
+def test_edit_modal_in_index(client):
+    """Test that the edit modal and necessary data attributes are present."""
+    # First add a note
+    note = Note(title="Test Title", content="Test Content")
+    db.session.add(note)
+    db.session.commit()
+
+    # Get the index page
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert b"Edit Note" in resp.data  # Modal title
+    assert b"data-note-id" in resp.data  # Data attributes for modal
+    assert b"Test Title" in resp.data
+    assert b"Test Content" in resp.data
+
+# Test editing a note - POST update
+def test_edit_note_post(client):
+    """Test that a note can be updated successfully."""
+    # First add a note
+    note = Note(title="Original Title", content="Original Content")
+    db.session.add(note)
+    db.session.commit()
+    note_id = note.id
+
+    # Update the note
+    resp = client.post(f"/update/{note_id}", data={
+        "note_title": "Updated Title",
+        "note_content": "Updated Content"
+    })
+    assert resp.status_code == 302  # Should redirect
+
+    # Check if note was updated
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert b"Updated Title" in resp.data
+    assert b"Updated Content" in resp.data
+    assert b"Original Title" not in resp.data
+    assert b"Original Content" not in resp.data
+
+# Test updating non-existent note
+def test_update_nonexistent_note(client):
+    """Test that updating a non-existent note returns 404."""
+    resp = client.post("/update/999", data={
+        "note_title": "Test Title",
+        "note_content": "Test Content"
+    })
+    assert resp.status_code == 404
+
