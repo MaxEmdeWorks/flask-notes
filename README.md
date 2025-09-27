@@ -46,7 +46,7 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ SQLite database (default) with Flask-SQLAlchemy
 - ✅ PostgreSQL support (configurable via DATABASE_URL)
 - ✅ Database migrations with Flask-Migrate
-- ✅ CRUD operations for notes (Create, Read, Delete)
+- ✅ CRUD operations for notes (Create, Read, Update, Delete)
 - ✅ Responsive Bootstrap UI
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
@@ -64,8 +64,8 @@ flask seed-db
 ```
 
 ## Next steps
-- Add note editing functionality
-- Add pagination and search.
+- ✅ Add note editing functionality
+- ✅ Add pagination and search.
 - Add real auth (Flask-Login or JWT) and CSRF-protected forms.
 - Add darkmode feature
 - Add screenshots/GIF to this README.

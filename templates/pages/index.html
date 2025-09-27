@@ -1,44 +1,279 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- Create Note Form -->
-<div class="card shadow-sm mb-4">
-  <div class="card-header fw-semibold">Create a note</div>
-  <div class="card-body">
-    <form method="post" action="{{ url_for('add') }}" class="row g-3">
-      <div class="col-12">
-        <label class="form-label" for="note_title">Title</label>
-        <input class="form-control" id="note_title" name="note_title" placeholder="Title" required>
+<div class="row g-3 content-height">
+  <!-- Left Side -->
+  <div class="col-12 col-lg-4 d-flex">
+    <div class="card shadow-sm w-100">
+      <div class="card-header fw-semibold py-2">Create a note</div>
+      <div class="card-body d-flex flex-column p-3">
+        <form method="post" action="{{ url_for('add') }}" class="d-flex flex-column h-100">
+          <div class="mb-2">
+            <label class="form-label mb-1" for="note_title">Title</label>
+            <input class="form-control form-control-sm" id="note_title" name="note_title" placeholder="Title" required>
+          </div>
+          <div class="mb-2 flex-grow-1 d-flex flex-column">
+            <label class="form-label mb-1" for="note_content">Content</label>
+            <textarea class="form-control form-control-sm flex-grow-1 resize-none" id="note_content" name="note_content"
+                      placeholder="Write your note here..." required rows="1"></textarea>
+          </div>
+          <div class="mt-auto pt-2">
+            <button type="submit" class="btn btn-primary btn-sm w-100">Add Note</button>
+          </div>
+        </form>
       </div>
-      <div class="col-12">
-        <label class="form-label" for="note_content">Content</label>
-        <textarea class="form-control" id="note_content" name="note_content" rows="3" placeholder="Content" required></textarea>
+    </div>
+  </div>
+
+  <!-- Right Side -->
+  <div class="col-12 col-lg-8 d-flex flex-column">
+    <div class="row g-2 mb-2 align-items-center">
+      <!-- Notes Badge -->
+      <div class="col-auto">
+        <h2 class="h5 mb-0">Notes <span class="badge text-bg-secondary">{{ total_notes }}</span></h2>
       </div>
-      <div class="col-12">
-        <button class="btn btn-primary">Add note</button>
+
+      <!-- Search Form -->
+      <div class="col">
+        <form method="get" class="d-flex justify-content-center justify-content-md-start" id="searchForm">
+          <input type="hidden" name="page" value="1">
+          <div class="input-group input-group-sm" style="max-width: 300px;">
+            <input class="form-control" type="search" name="search" id="searchInput" placeholder="Search notes..." value="{{ search_query or '' }}">
+            {% if search_query %}
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch" title="Clear search">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            {% endif %}
+            <button class="btn btn-outline-secondary" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+
+      <!-- Pagination -->
+      {% if total_pages > 1 %}
+      <div class="col-12 col-md-auto">
+        <nav aria-label="Notes pagination">
+          <ul class="pagination pagination-sm mb-0 justify-content-center justify-content-md-end">
+            <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+              {% if current_page > 1 %}
+                <a class="page-link py-1 px-2 fs-6" href="{{ url_for('index', page=current_page-1, search=search_query) }}">Previous</a>
+              {% else %}
+                <span class="page-link py-1 px-2 fs-6">Previous</span>
+              {% endif %}
+            </li>
+            {% for page_num in range(1, total_pages + 1) %}
+              <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                {% if page_num == current_page %}
+                  <span class="page-link py-1 px-2 fs-6">{{ page_num }}</span>
+                {% else %}
+                  <a class="page-link py-1 px-2 fs-6" href="{{ url_for('index', page=page_num, search=search_query) }}">{{ page_num }}</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+            <li class="page-item {% if current_page >= total_pages %}disabled{% endif %}">
+              {% if current_page < total_pages %}
+                <a class="page-link py-1 px-2 fs-6" href="{{ url_for('index', page=current_page+1, search=search_query) }}">Next</a>
+              {% else %}
+                <span class="page-link py-1 px-2 fs-6">Next</span>
+              {% endif %}
+            </li>
+          </ul>
+        </nav>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Notes Container -->
+    <div class="flex-grow-1 border rounded p-2 bg-light overflow-auto" id="notesContainer">
+      {% if notes %}
+        <div class="row g-2">
+          {% for note in notes %}
+            <div class="col-12 col-md-6">
+              <article class="card shadow-sm card-height-200">
+                <div class="card-body d-flex flex-column p-3">
+                  <h3 class="card-title h6 mb-2 text-truncate">{{ note.title }}</h3>
+                  <div class="card-text text-muted small mb-2 flex-grow-1 position-relative overflow-hidden text-content">
+                    <p class="mb-0">{{ note.content }}</p>
+                    {% if note.content|length > 200 %}
+                      <div class="position-absolute bottom-0 end-0 bg-white fade-overlay">
+                        <small class="text-primary" role="button" data-bs-toggle="tooltip"
+                              data-bs-title="Click View to see full content">...</small>
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% if note.created_at %}
+                    <small class="text-muted d-block mb-2">
+                      <span class="badge bg-light text-muted border fs-8">
+                        {{ note.created_at.strftime('%m/%d %H:%M') }}
+                      </span>
+                      {% if note.updated_at and note.updated_at != note.created_at %}
+                        <span class="badge bg-light text-success border fs-8">
+                          ↻ {{ note.updated_at.strftime('%m/%d %H:%M') }}
+                        </span>
+                      {% endif %}
+                    </small>
+                  {% endif %}
+                  <div class="d-flex gap-2 mt-auto">
+                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill"
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewModal"
+                            data-note-id="{{ note.id }}"
+                            data-note-title="{{ note.title | e }}"
+                            data-note-content="{{ note.content | e }}">
+                      <i class="bi bi-eye"></i> View
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal"
+                            data-note-id="{{ note.id }}"
+                            data-note-title="{{ note.title | e }}"
+                            data-note-content="{{ note.content | e }}">
+                      <i class="bi bi-pencil"></i> Edit
+                    </button>
+                    <form method="post" action="{{ url_for('delete', note_id=note.id) }}" class="flex-fill">
+                      <button type="submit" class="btn btn-outline-danger btn-sm w-100" onclick="return confirm('Delete this note?')">
+                        <i class="bi bi-trash"></i> Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="d-flex flex-column justify-content-center align-items-center h-100 text-muted">
+          <div class="display-4 mb-2">📝</div>
+          <h6 class="mb-1">No notes yet</h6>
+          <small class="text-center">Create your first note using the form on the left!</small>
+        </div>
+      {% endif %}
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Notes List -->
-<h2 class="h4 mb-3">Notes <span class="badge text-bg-secondary">{{ notes|length }}</span></h2>
-{% if notes %}
-  <div class="row g-3">
-    {% for note in notes %}
-      <div class="col-12 col-md-6">
-        <article class="card h-100">
-          <div class="card-body d-flex flex-column">
-            <h3 class="card-title h5">{{ note.title }}</h3>
-            <p class="card-text flex-grow-1">{{ note.content }}</p>
-            <form method="post" action="{{ url_for('delete', note_id=note.id) }}" class="mt-2">
-              <button class="btn btn-outline-danger btn-sm">Delete</button>
-            </form>
-          </div>
-        </article>
+<!-- View Note Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="viewModalLabel">View Note</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    {% endfor %}
+      <div class="modal-body modal-body-scroll">
+        <h5 id="viewNoteTitle" class="mb-3 text-wrap"></h5>
+        <div id="viewNoteContent" class="text-muted lh-base text-wrap" style="white-space: pre-wrap;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="editFromView">Edit Note</button>
+      </div>
+    </div>
   </div>
-{% else %}
-  <div class="alert alert-secondary">No notes yet</div>
-{% endif %}
+</div>
+
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModalLabel">Edit Note</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" id="editForm" action="">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="editNoteTitle">Title</label>
+            <input class="form-control" id="editNoteTitle" name="note_title" placeholder="Title" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="editNoteContent">Content</label>
+            <textarea class="form-control" id="editNoteContent" name="note_content" rows="6" placeholder="Content" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Note</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  const NoteApp = {
+    currentNote: {},
+
+    // Initialize all modal handlers
+    init() {
+      this.bindViewModal();
+      this.bindEditModal();
+      this.bindEditFromView();
+      this.bindClearSearch();
+      $('[data-bs-toggle="tooltip"]').tooltip();
+    },
+
+    // Extract note data from button element
+    extractNoteData($button) {
+      return {
+        id: $button.data('note-id'),
+        title: $button.data('note-title'),
+        content: $button.data('note-content')
+      };
+    },
+
+    // Populate edit modal with note data
+    populateEditModal(noteData) {
+      $('#editForm').attr('action', `/update/${noteData.id}`);
+      $('#editNoteTitle').val(noteData.title);
+      $('#editNoteContent').val(noteData.content);
+    },
+
+    // Handle view modal display
+    bindViewModal() {
+      $('#viewModal').on('show.bs.modal', (event) => {
+        const noteData = this.extractNoteData($(event.relatedTarget));
+        this.currentNote = noteData;
+        $('#viewNoteTitle').text(noteData.title);
+        $('#viewNoteContent').text(noteData.content);
+      });
+    },
+
+    // Handle direct edit modal
+    bindEditModal() {
+      $('#editModal').on('show.bs.modal', (event) => {
+        const $button = $(event.relatedTarget);
+        if ($button.length) {
+          this.populateEditModal(this.extractNoteData($button));
+        }
+      });
+    },
+
+    // Handle edit from view modal
+    bindEditFromView() {
+      $('#editFromView').on('click', () => {
+        $('#viewModal').modal('hide');
+        setTimeout(() => {
+          this.populateEditModal(this.currentNote);
+          $('#editModal').modal('show');
+        }, 300);
+      });
+    },
+
+    // Handle clear search functionality
+    bindClearSearch() {
+      $('#clearSearch').on('click', () => {
+        // Clear search and redirect to home
+        window.location.href = '{{ url_for("index") }}';
+      });
+    }
+  };
+
+  // Initialize the application
+  NoteApp.init();
+});
+</script>
 {% endblock %}

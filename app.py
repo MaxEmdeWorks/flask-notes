@@ -30,6 +30,11 @@ def create_app(config=None):
     Migrate(app, db)  # Initialize Flask-Migrate
     db_utils.init_app(app)
 
+    # Create tables if using SQLite fallback
+    with app.app_context():
+        if 'sqlite:///' in app.config['SQLALCHEMY_DATABASE_URI'] and not os.path.exists('instance/notes.db'):
+            db.create_all()
+
     # Register routes
     register_routes(app)
 
@@ -40,9 +45,26 @@ def register_routes(app):
     # Render the index page with the list of notes
     @app.route("/")
     def index():
-        """Render the index page with the list of notes."""
-        notes = Note.query.all()
-        return render_template("pages/index.html", notes=notes)
+        """Render the index page with paginated notes."""
+        page = request.args.get('page', 1, type=int)
+        search_query = request.args.get('search', '').strip()
+        per_page = 6
+
+        # Build query with search filter
+        query = Note.query
+        if search_query:
+            query = query.filter(db.or_(Note.title.contains(search_query), Note.content.contains(search_query)))
+
+        # Get paginated notes (using SQLAlchemy's built-in pagination)
+        pagination = query.order_by(Note.updated_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
+
+        return render_template("pages/index.html",
+            notes=pagination.items,
+            current_page=pagination.page,
+            total_pages=pagination.pages,
+            total_notes=pagination.total,
+            search_query=search_query
+        )
 
     # Add a new note from form data
     @app.route("/add", methods=["POST"])
@@ -56,6 +78,26 @@ def register_routes(app):
             new_note = Note(title=title, content=content)
             db.session.add(new_note)
             db.session.commit()
+        return redirect(url_for("index"))
+
+    # Update a note by its ID
+    @app.route("/update/<int:note_id>", methods=["POST"])
+    def update(note_id: int):
+        """Update a note by its ID and redirect back to index."""
+        note = db.session.get(Note, note_id)
+        if not note:
+            abort(404)
+
+        # Get form data
+        title = request.form.get("note_title", "").strip()
+        content = request.form.get("note_content", "").strip()
+
+        if title and content:
+            # Update note fields
+            note.title = title
+            note.content = content
+            db.session.commit()
+
         return redirect(url_for("index"))
 
     # Delete a note by its ID
