@@ -1,6 +1,9 @@
 Flask
 Flask-SQLAlchemy
 Flask-Migrate
+Flask-Login
+Flask-WTF
+WTForms
 python-dotenv
 psycopg2-binary
 pytest

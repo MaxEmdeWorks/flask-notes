@@ -4,6 +4,8 @@
 
 A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-ready structure and templates. Uses SQLite (default) or PostgreSQL with Flask-SQLAlchemy and Flask-Migrate for persistent data storage.
 
+**Live demo:** https://flask-notes-0emy.onrender.com/ — first request may take up to a minute while the service spins up
+
 ## Quickstart
 1. Create venv and install deps
    ```bash
@@ -16,6 +18,11 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
    ```bash
    # Copy example env file and customize if needed
    cp .env.example .env  # Windows: copy .env.example .env
+
+   # Configure Google reCAPTCHA v2 keys in .env for register/login forms
+   # Create keys at https://www.google.com/recaptcha/admin/create
+   # For local development, add 'localhost' or '127.0.0.1' to allowed domains
+   # Set RECAPTCHA_PUBLIC_KEY and RECAPTCHA_PRIVATE_KEY in .env
 
    # Uses SQLite by default (sqlite:///notes.db)
    # For PostgreSQL: Set DATABASE_URL=postgresql://postgres:dev@localhost:5432/notes
@@ -47,7 +54,11 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ PostgreSQL support (configurable via DATABASE_URL)
 - ✅ Database migrations with Flask-Migrate
 - ✅ CRUD operations for notes (Create, Read, Update, Delete)
-- ✅ Responsive Bootstrap UI
+- ✅ User authentication with Flask-Login (register, login, logout)
+- ✅ Google reCAPTCHA v2 integration for security
+- ✅ CSRF protection with Flask-WTF
+- ✅ User-specific notes (notes are private to each user)
+- ✅ Responsive Bootstrap UI with modal-based editing
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
 
@@ -59,14 +70,19 @@ flask db migrate -m "Description of changes"
 # Apply migrations to database
 flask db upgrade
 
-# Add sample data (custom command)
+# Add sample data with test user (custom command)
 flask seed-db
+
+# Create a new user (interactive)
+flask create-user
 ```
 
 ## Next steps
 - ✅ Add note editing functionality
 - ✅ Add pagination and search.
-- Add real auth (Flask-Login or JWT) and CSRF-protected forms.
+- ✅ Add real auth (Flask-Login or JWT) and CSRF-protected forms.
+- Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
+- Add multilanguage system
 - Add darkmode feature
 - Add screenshots/GIF to this README.
 

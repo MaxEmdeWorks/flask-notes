@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link href="{{ url_for('static', filename='css/auth.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center auth-container">
+  <div class="w-100" style="max-width: 500px;">
+    <div class="card shadow border-0">
+      <div class="card-body">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs auth-tabs" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link {{ 'active' if tab == 'login' else '' }}"
+                    id="login-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#login-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="login-pane"
+                    aria-selected="{{ 'true' if tab == 'login' else 'false' }}">
+              <i class="bi bi-lock-fill me-2"></i>Anmelden
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link {{ 'active' if tab == 'register' else '' }}"
+                    id="register-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#register-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="register-pane"
+                    aria-selected="{{ 'true' if tab == 'register' else 'false' }}">
+              <i class="bi bi-person-plus-fill me-2"></i>Registrieren
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content pt-4" id="authTabContent" style="min-height: 350px;">
+          <!-- Login Tab -->
+          <div class="tab-pane fade {{ 'show active' if tab == 'login' else '' }}" id="login-pane" role="tabpanel" aria-labelledby="login-tab">
+            <div>
+              <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
+                {{ login_form.hidden_tag() }}
+                <div class="mb-3">
+                  {{ login_form.username.label(class="form-label") }}
+                  {{ login_form.username(class="form-control" + (" is-invalid" if login_form.username.errors else "")) }}
+                  {% if login_form.username.errors %}
+                    <div class="invalid-feedback">
+                      {% for error in login_form.username.errors %}
+                        <div>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                  {{ login_form.password.label(class="form-label") }}
+                  {{ login_form.password(class="form-control" + (" is-invalid" if login_form.password.errors else "")) }}
+                  {% if login_form.password.errors %}
+                    <div class="invalid-feedback">
+                      {% for error in login_form.password.errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <div class="recaptcha-wrapper">
+                        {{ login_form.recaptcha }}
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                  {{ login_form.submit(class="btn btn-primary") }}
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Register Tab -->
+          <div class="tab-pane fade {{ 'show active' if tab == 'register' else '' }}" id="register-pane" role="tabpanel" aria-labelledby="register-tab">
+            <div>
+              <form method="POST" action="{{ url_for('auth.register') }}" id="registerForm">
+                {{ register_form.hidden_tag() }}
+                <div class="mb-3">
+                  {{ register_form.username.label(class="form-label") }}
+                  {{ register_form.username(class="form-control" + (" is-invalid" if register_form.username.errors else "")) }}
+                  {% if register_form.username.errors %}
+                    <div class="invalid-feedback">
+                      {% for error in register_form.username.errors %}
+                        <div>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="form-text">3-80 Zeichen, nur Buchstaben, Zahlen und Unterstriche.</div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                  {{ register_form.password.label(class="form-label") }}
+                  {{ register_form.password(class="form-control" + (" is-invalid" if register_form.password.errors else "")) }}
+                  {% if register_form.password.errors %}
+                    <div class="invalid-feedback">
+                      {% for error in register_form.password.errors %}
+                        <div>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="form-text">Mindestens 6 Zeichen.</div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                  {{ register_form.confirm_password.label(class="form-label") }}
+                  {{ register_form.confirm_password(class="form-control" + (" is-invalid" if register_form.confirm_password.errors else "")) }}
+                  {% if register_form.confirm_password.errors %}
+                    <div class="invalid-feedback">
+                      {% for error in register_form.confirm_password.errors %}
+                        <div>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <div class="recaptcha-wrapper">
+                        {{ register_form.recaptcha }}
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                  {{ register_form.submit(class="btn btn-success") }}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  // Initialize Bootstrap Tabs
+  $('#authTabs button[data-bs-toggle="tab"]').each(function() {
+    new bootstrap.Tab(this);
+  });
+
+  // Event listener for tab switching
+  $('#authTabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function(event) {
+    // Update URL without page reload
+    var targetTab = $(event.target).attr('aria-controls');
+    if (targetTab === 'login-pane') {
+      history.replaceState(null, null, '{{ url_for("auth.login") }}');
+    } else if (targetTab === 'register-pane') {
+      history.replaceState(null, null, '{{ url_for("auth.register") }}');
+    }
+  });
+
+  // Improve form validation
+  $('.auth-form-container form').on('submit', function() {
+    var $form = $(this);
+    var $submitBtn = $form.find('button[type="submit"], input[type="submit"]');
+
+    // Disable button to prevent double submits
+    $submitBtn.prop('disabled', true);
+    $submitBtn.html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+    // Re-enable after 5 seconds (in case server doesn't respond)
+    setTimeout(function() {
+      $submitBtn.prop('disabled', false);
+      $submitBtn.html($submitBtn.data('original-text') || 'Submit');
+    }, 5000);
+  });
+
+  // Save original button text
+  $('.auth-form-container button[type="submit"], .auth-form-container input[type="submit"]').each(function() {
+    $(this).data('original-text', $(this).html());
+  });
+});
+</script>
+{% endblock %}
