@@ -1,0 +1,263 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-09-29 23:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: blueprints/auth/__init__.py:46
+#, python-format
+msgid "Welcome back, %(username)s!"
+msgstr ""
+
+#: blueprints/auth/__init__.py:49
+msgid "Invalid username or password."
+msgstr ""
+
+#: blueprints/auth/__init__.py:70
+msgid "Registration successful! You can now log in."
+msgstr ""
+
+#: blueprints/auth/__init__.py:80
+msgid "You have been successfully logged out."
+msgstr ""
+
+#: blueprints/notes/__init__.py:53
+msgid "Note successfully created!"
+msgstr ""
+
+#: blueprints/notes/__init__.py:72
+msgid "Note successfully updated!"
+msgstr ""
+
+#: blueprints/notes/__init__.py:99
+msgid "Note successfully deleted!"
+msgstr ""
+
+#: models/forms.py:12
+msgid "Username"
+msgstr ""
+
+#: models/forms.py:13 models/forms.py:25
+msgid "Username is required."
+msgstr ""
+
+#: models/forms.py:14 models/forms.py:26
+msgid "Username must be between 3 and 80 characters long."
+msgstr ""
+
+#: models/forms.py:16
+msgid "Password"
+msgstr ""
+
+#: models/forms.py:17 models/forms.py:29
+msgid "Password is required."
+msgstr ""
+
+#: models/forms.py:20 templates/auth/auth.html:23
+msgid "Login"
+msgstr ""
+
+#: models/forms.py:24
+msgid "Username*"
+msgstr ""
+
+#: models/forms.py:28
+msgid "Password*"
+msgstr ""
+
+#: models/forms.py:30 models/forms.py:34
+msgid "Password must be at least 6 characters long."
+msgstr ""
+
+#: models/forms.py:32
+msgid "Confirm Password*"
+msgstr ""
+
+#: models/forms.py:33
+msgid "Please confirm your password."
+msgstr ""
+
+#: models/forms.py:35
+msgid "Passwords must match."
+msgstr ""
+
+#: models/forms.py:38 templates/auth/auth.html:35
+msgid "Register"
+msgstr ""
+
+#: models/forms.py:44
+msgid "Username already taken. Please choose another one."
+msgstr ""
+
+#: models/forms.py:48 templates/notes/notes.html:18
+#: templates/notes/notes.html:196
+msgid "Title"
+msgstr ""
+
+#: models/forms.py:49
+msgid "Title is required."
+msgstr ""
+
+#: models/forms.py:50
+msgid "Title must be between 1 and 200 characters long."
+msgstr ""
+
+#: models/forms.py:52 templates/notes/notes.html:200
+msgid "Content"
+msgstr ""
+
+#: models/forms.py:53
+msgid "Content is required."
+msgstr ""
+
+#: models/forms.py:54
+msgid "Content cannot be empty."
+msgstr ""
+
+#: models/forms.py:56
+msgid "Save"
+msgstr ""
+
+#: templates/base.html:35 templates/base.html:93
+msgid "Dashboard"
+msgstr ""
+
+#: templates/base.html:43 templates/base.html:118
+msgid "English"
+msgstr ""
+
+#: templates/base.html:46 templates/base.html:121
+msgid "German"
+msgstr ""
+
+#: templates/base.html:52 templates/base.html:126
+msgid "Toggle Dark Mode"
+msgstr ""
+
+#: templates/base.html:73 templates/base.html:108
+msgid "Logout"
+msgstr ""
+
+#: templates/base.html:87 templates/base.html:141
+#: templates/notes/notes.html:169 templates/notes/notes.html:176
+#: templates/notes/notes.html:189
+msgid "Close"
+msgstr ""
+
+#: templates/base.html:102
+msgid "Dark Mode"
+msgstr ""
+
+#: templates/base.html:157
+msgid "Built with Flask and Bootstrap"
+msgstr ""
+
+#: templates/base.html:159
+msgid "GitHub Profile"
+msgstr ""
+
+#: templates/base.html:162
+msgid "Repository"
+msgstr ""
+
+#: templates/auth/auth.html:99
+msgid "3-80 characters, only letters, numbers and underscores."
+msgstr ""
+
+#: templates/auth/auth.html:113
+msgid "At least 6 characters."
+msgstr ""
+
+#: templates/notes/notes.html:12
+msgid "Create Note"
+msgstr ""
+
+#: templates/notes/notes.html:22
+msgid "Write your note here..."
+msgstr ""
+
+#: templates/notes/notes.html:25
+msgid "Add Note"
+msgstr ""
+
+#: templates/notes/notes.html:37
+msgid "Notes"
+msgstr ""
+
+#: templates/notes/notes.html:45
+msgid "Search notes..."
+msgstr ""
+
+#: templates/notes/notes.html:47
+msgid "Clear search"
+msgstr ""
+
+#: templates/notes/notes.html:61
+msgid "Notes Pagination"
+msgstr ""
+
+#: templates/notes/notes.html:65 templates/notes/notes.html:67
+msgid "Previous"
+msgstr ""
+
+#: templates/notes/notes.html:81 templates/notes/notes.html:83
+msgid "Next"
+msgstr ""
+
+#: templates/notes/notes.html:106
+msgid "Click View for full content"
+msgstr ""
+
+#: templates/notes/notes.html:129
+msgid "View"
+msgstr ""
+
+#: templates/notes/notes.html:137
+msgid "Edit"
+msgstr ""
+
+#: templates/notes/notes.html:141
+msgid "Delete this note?"
+msgstr ""
+
+#: templates/notes/notes.html:142
+msgid "Delete"
+msgstr ""
+
+#: templates/notes/notes.html:154
+msgid "No notes available yet"
+msgstr ""
+
+#: templates/notes/notes.html:155
+msgid "Create your first note with the form on the left!"
+msgstr ""
+
+#: templates/notes/notes.html:168
+msgid "View Note"
+msgstr ""
+
+#: templates/notes/notes.html:177 templates/notes/notes.html:188
+msgid "Edit Note"
+msgstr ""
+
+#: templates/notes/notes.html:204
+msgid "Cancel"
+msgstr ""
+
+#: templates/notes/notes.html:205
+msgid "Update Note"
+msgstr ""
+

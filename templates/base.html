@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ CURRENT_LANGUAGE }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,14 +32,24 @@
           <!-- Centered Navigation Links -->
           <div class="navbar-nav mx-auto">
             <a class="nav-link {{ 'active' if request.endpoint == 'notes.index' }}" href="{{ url_for('notes.index') }}">
-              <i class="bi bi-house me-1"></i>Dashboard
+              <i class="bi bi-house me-1"></i>{{ translate('Dashboard') }}
             </a>
           </div>
 
           <!-- Right Side Controls -->
           <div class="d-flex align-items-center">
+            <!-- Language Flags (always visible) -->
+            <div class="btn-group me-2" role="group" aria-label="Language selection">
+              <a href="{{ url_for('set_language', language='en') }}" class="btn btn-outline-secondary btn-sm {{ 'active' if get_locale() == 'en' else '' }}" title="{{ translate('English') }}">
+                🇺🇸
+              </a>
+              <a href="{{ url_for('set_language', language='de') }}" class="btn btn-outline-secondary btn-sm {{ 'active' if get_locale() == 'de' else '' }}" title="{{ translate('German') }}">
+                🇩🇪
+              </a>
+            </div>
+
             <!-- Dark Mode Toggle -->
-            <button class="btn btn-outline-secondary btn-sm me-2" id="darkModeToggle" type="button" title="Dark Mode umschalten">
+            <button class="btn btn-outline-secondary btn-sm me-2" id="darkModeToggle" type="button" title="{{ translate('Toggle Dark Mode') }}">
               <i class="bi bi-moon" id="darkModeIcon"></i>
             </button>
 
@@ -60,7 +70,7 @@
                 <li>
                   <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
                     <i class="bi bi-box-arrow-right me-2"></i>
-                    Abmelden
+                    {{ translate('Logout') }}
                   </a>
                 </li>
               </ul>
@@ -74,13 +84,13 @@
             <h5 class="offcanvas-title" id="mobileMenuLabel">
               <i class="bi bi-person-circle me-2"></i>{{ current_user.username }}
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{{ translate('Close') }}"></button>
           </div>
           <div class="offcanvas-body">
             <!-- Navigation Links -->
             <div class="nav nav-pills flex-column mb-4">
               <a class="nav-link {{ 'active' if request.endpoint == 'notes.index' }}" href="{{ url_for('notes.index') }}">
-                <i class="bi bi-house me-2"></i>Dashboard
+                <i class="bi bi-house me-2"></i>{{ translate('Dashboard') }}
               </a>
             </div>
 
@@ -89,22 +99,34 @@
               <!-- Dark Mode Toggle -->
               <button class="btn btn-outline-secondary" id="darkModeToggleMobile" type="button">
                 <i class="bi bi-moon me-2" id="darkModeIconMobile"></i>
-                <span id="darkModeTextMobile">Dark Mode</span>
+                <span id="darkModeTextMobile">{{ translate('Dark Mode') }}</span>
               </button>
 
               <!-- Logout Button -->
               <a class="btn btn-outline-danger" href="{{ url_for('auth.logout') }}">
                 <i class="bi bi-box-arrow-right me-2"></i>
-                Abmelden
+                {{ translate('Logout') }}
               </a>
             </div>
           </div>
         </div>
         {% else %}
-        <!-- Dark Mode Toggle for non-authenticated users -->
-        <button class="btn btn-outline-secondary btn-sm ms-auto" id="darkModeToggle" type="button" title="Dark Mode umschalten">
-          <i class="bi bi-moon" id="darkModeIcon"></i>
-        </button>
+        <!-- Controls for non-authenticated users -->
+        <div class="d-flex align-items-center ms-auto">
+          <!-- Language Flags (same as for authenticated users) -->
+          <div class="btn-group me-2" role="group" aria-label="Language selection">
+            <a href="{{ url_for('set_language', language='en') }}" class="btn btn-outline-secondary btn-sm {{ 'active' if get_locale() == 'en' else '' }}" title="{{ translate('English') }}">
+              🇺🇸
+            </a>
+            <a href="{{ url_for('set_language', language='de') }}" class="btn btn-outline-secondary btn-sm {{ 'active' if get_locale() == 'de' else '' }}" title="{{ translate('German') }}">
+              🇩🇪
+            </a>
+          </div>
+          <!-- Dark Mode Toggle for non-authenticated users -->
+          <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" type="button" title="{{ translate('Toggle Dark Mode') }}">
+            <i class="bi bi-moon" id="darkModeIcon"></i>
+          </button>
+        </div>
         {% endif %}
       </div>
     </nav>
@@ -116,7 +138,7 @@
           {% for category, message in messages %}
             <div class="flash-popup alert alert-{{ 'danger' if category == 'error' else ('success' if category == 'success' else 'info') }} alert-dismissible fade show" role="alert">
               {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ translate('Close') }}"></button>
             </div>
           {% endfor %}
         {% endif %}
@@ -132,12 +154,12 @@
     <footer class="bg-body-tertiary border-top mt-auto">
       <div class="container-fluid px-3">
         <div class="d-flex justify-content-between align-items-center py-2">
-          <p class="mb-0 small text-secondary">Built with Flask and Bootstrap</p>
+          <p class="mb-0 small text-secondary">{{ translate('Built with Flask and Bootstrap') }}</p>
           <div class="d-flex gap-3">
-            <a href="https://github.com/MaxEmdeWorks" target="_blank" rel="noopener noreferrer" class="text-secondary text-decoration-none" title="GitHub Profil">
+            <a href="https://github.com/MaxEmdeWorks" target="_blank" rel="noopener noreferrer" class="text-secondary text-decoration-none" title="{{ translate('GitHub Profile') }}">
               <i class="bi bi-github"></i>
             </a>
-            <a href="https://github.com/MaxEmdeWorks/flask-notes" target="_blank" rel="noopener noreferrer" class="text-secondary text-decoration-none" title="Repository">
+            <a href="https://github.com/MaxEmdeWorks/flask-notes" target="_blank" rel="noopener noreferrer" class="text-secondary text-decoration-none" title="{{ translate('Repository') }}">
               <i class="bi bi-code-slash"></i>
             </a>
           </div>

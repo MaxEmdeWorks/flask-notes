@@ -20,7 +20,7 @@
                     role="tab"
                     aria-controls="login-pane"
                     aria-selected="{{ 'true' if tab == 'login' else 'false' }}">
-              <i class="bi bi-lock-fill me-2"></i>Anmelden
+              <i class="bi bi-lock-fill me-2"></i>{{ translate('Login') }}
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -32,7 +32,7 @@
                     role="tab"
                     aria-controls="register-pane"
                     aria-selected="{{ 'true' if tab == 'register' else 'false' }}">
-              <i class="bi bi-person-plus-fill me-2"></i>Registrieren
+              <i class="bi bi-person-plus-fill me-2"></i>{{ translate('Register') }}
             </button>
           </li>
         </ul>
@@ -96,7 +96,7 @@
                       {% endfor %}
                     </div>
                   {% else %}
-                    <div class="form-text">3-80 Zeichen, nur Buchstaben, Zahlen und Unterstriche.</div>
+                    <div class="form-text">{{ translate('3-80 characters, only letters, numbers and underscores.') }}</div>
                   {% endif %}
                 </div>
 
@@ -110,7 +110,7 @@
                       {% endfor %}
                     </div>
                   {% else %}
-                    <div class="form-text">Mindestens 6 Zeichen.</div>
+                    <div class="form-text">{{ translate('At least 6 characters.') }}</div>
                   {% endif %}
                 </div>
 

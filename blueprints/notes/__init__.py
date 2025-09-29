@@ -4,6 +4,7 @@ Handles all note-related operations (CRUD).
 """
 from flask import Blueprint, render_template, request, redirect, url_for, abort, flash
 from flask_login import login_required, current_user
+from flask_babel import gettext as translate
 from models.database import db, Note
 from models.forms import NoteForm
 
@@ -49,7 +50,7 @@ def add():
         new_note = Note(title=form.title.data, content=form.content.data, user_id=current_user.id)
         db.session.add(new_note)
         db.session.commit()
-        flash('Notiz erfolgreich erstellt!', 'success')
+        flash(translate('Note successfully created!'), 'success')
 
     return redirect(url_for("notes.index"))
 
@@ -68,7 +69,7 @@ def update(note_id: int):
         note.title = form.title.data
         note.content = form.content.data
         db.session.commit()
-        flash('Notiz erfolgreich aktualisiert!', 'success')
+        flash(translate('Note successfully updated!'), 'success')
 
     return redirect(url_for("notes.index"))
 
@@ -95,6 +96,6 @@ def delete(note_id: int):
         abort(404)
     db.session.delete(note)
     db.session.commit()
-    flash('Notiz erfolgreich gelöscht!', 'success')
+    flash(translate('Note successfully deleted!'), 'success')
     return redirect(url_for("notes.index"))
 

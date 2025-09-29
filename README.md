@@ -4,7 +4,7 @@
 
 A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-ready structure and templates. Uses SQLite (default) or PostgreSQL with Flask-SQLAlchemy and Flask-Migrate for persistent data storage.
 
-**Live demo:** https://flask-notes-0emy.onrender.com/ — first request may take up to a minute while the service spins up
+**Live demo:** https://flask-notes-0emy.onrender.com/ - first request may take up to a minute while the service spins up
 
 ## Quickstart
 1. Create venv and install deps
@@ -61,6 +61,7 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ Responsive Bootstrap UI with modal-based editing
 - ✅ Dark/Light theme toggle with system preference detection
 - ✅ Modern mobile navigation with offcanvas sidebar
+- ✅ Internationalization (i18n) with Flask-Babel (English/German)
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
 
@@ -79,12 +80,68 @@ flask seed-db
 flask create-user
 ```
 
+## Internationalization (i18n)
+
+Flask-Notes supports multiple languages using Flask-Babel. Currently supported languages:
+- English (en) - default
+- German (de)
+
+### Managing Translations
+
+Use the provided script to manage translations:
+
+```bash
+# Extract, update and compile all translations
+python update_translations.py
+```
+
+### Adding New Translations
+
+1. Mark strings for translation in your code:
+   ```python
+   # In Python files (runtime translations, flash messages, etc.)
+   from flask_babel import gettext as translate
+   flash(translate("Welcome back!"))
+
+   # For forms and class-level definitions (lazy translation)
+   from flask_babel import lazy_gettext as translate_lazy
+   from wtforms import StringField
+
+   class MyForm(FlaskForm):
+       title = StringField(translate_lazy('Title'), validators=[
+           DataRequired(message=translate_lazy('Title is required.'))
+       ])
+
+   # In Jinja2 templates
+   {{ translate("Hello World") }}
+   ```
+
+   - Use `translate()` for runtime translations in views, flash messages, and dynamic content.
+   - Use `translate_lazy()` for forms, validation messages, and any string that should be translated only when rendered (e.g., WTForms fields).
+
+2. Extract and update translation files:
+   ```bash
+   python update_translations.py
+   ```
+
+3. Edit translation files in `translations/{language}/LC_MESSAGES/messages.po`:
+   ```po
+   msgid "Hello World"
+   msgstr "Hallo Welt"  # Add your translation here
+   ```
+
+4. Compile translations and restart server:
+   ```bash
+   python update_translations.py
+   flask run
+   ```
+
 ## Next steps
 - ✅ Add note editing functionality
 - ✅ Add pagination and search.
 - ✅ Add real auth (Flask-Login or JWT) and CSRF-protected forms.
 - ✅ Add darkmode feature
+- ✅ Add multilanguage system
 - Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
-- Add multilanguage system
 - Add screenshots/GIF to this README.
 

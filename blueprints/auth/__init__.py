@@ -2,8 +2,9 @@
 Authentication Blueprint for Flask Notes app.
 Handles user login, registration, and logout.
 """
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_babel import gettext as translate
 from models.database import db, User
 from models.forms import LoginForm, RegistrationForm
 
@@ -35,11 +36,17 @@ def login():
         user = User.query.filter_by(username=username).one_or_none()
         if user and user.check_password(password):
             login_user(user)
+
+            # Save session language to database if different
+            if 'language' in session and session['language'] != user.get_language():
+                user.set_language(session['language'])
+                db.session.commit()
+
             next_page = request.args.get('next')
-            flash(f"Willkommen zurück, {user.username}!", 'success')
+            flash(translate("Welcome back, %(username)s!", username=user.username), 'success')
             return redirect(next_page) if next_page else redirect(url_for('notes.index'))
         else:
-            flash('Ungültiger Benutzername oder Passwort.', 'error')
+            flash(translate('Invalid username or password.'), 'error')
 
     return render_template("auth/auth.html", login_form=login_form, register_form=register_form, tab='login')
 
@@ -60,7 +67,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         # User registration successful
-        flash('Registrierung erfolgreich! Sie können sich jetzt anmelden.', 'success')
+        flash(translate('Registration successful! You can now log in.'), 'success')
         return redirect(url_for('auth.login'))
 
     return render_template("auth/auth.html", login_form=login_form, register_form=register_form, tab='register')
@@ -70,6 +77,6 @@ def register():
 def logout():
     """Logout user."""
     logout_user()
-    flash('Sie wurden erfolgreich abgemeldet.', 'info')
+    flash(translate('You have been successfully logged out.'), 'info')
     return redirect(url_for('auth.login'))
 

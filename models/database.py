@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
+    language = db.Column(db.String(10), default='en', nullable=True)
     created_at = db.Column(db.DateTime, default=utc_now)
 
     # Relationship to notes
@@ -31,6 +32,14 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         """Check if provided password matches hash."""
         return check_password_hash(self.password_hash, password)
+
+    def get_language(self):
+        """Get user's preferred language, defaulting to 'en' if not set."""
+        return self.language if self.language else 'en'
+
+    def set_language(self, language_code):
+        """Set user's preferred language."""
+        self.language = language_code
 
     def __repr__(self):
         return f'<User {self.username}>'
