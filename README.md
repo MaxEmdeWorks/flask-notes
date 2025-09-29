@@ -59,6 +59,8 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ CSRF protection with Flask-WTF
 - ✅ User-specific notes (notes are private to each user)
 - ✅ Responsive Bootstrap UI with modal-based editing
+- ✅ Dark/Light theme toggle with system preference detection
+- ✅ Modern mobile navigation with offcanvas sidebar
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
 
@@ -81,8 +83,8 @@ flask create-user
 - ✅ Add note editing functionality
 - ✅ Add pagination and search.
 - ✅ Add real auth (Flask-Login or JWT) and CSRF-protected forms.
+- ✅ Add darkmode feature
 - Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
 - Add multilanguage system
-- Add darkmode feature
 - Add screenshots/GIF to this README.
 

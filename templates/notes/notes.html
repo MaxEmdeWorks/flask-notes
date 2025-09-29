@@ -90,7 +90,7 @@
     </div>
 
     <!-- Notes Container -->
-    <div class="flex-grow-1 border rounded p-2 bg-light overflow-auto" id="notesContainer">
+    <div class="flex-grow-1 border rounded p-2 bg-body-secondary overflow-auto" id="notesContainer">
       {% if notes %}
         <div class="row g-2">
           {% for note in notes %}
@@ -101,7 +101,7 @@
                   <div class="card-text text-muted small mb-2 flex-grow-1 position-relative overflow-hidden text-content">
                     <p class="mb-0">{{ note.content }}</p>
                     {% if note.content|length > 200 %}
-                      <div class="position-absolute bottom-0 end-0 bg-white fade-overlay">
+                      <div class="position-absolute bottom-0 end-0 bg-body fade-overlay">
                         <small class="text-primary" role="button" data-bs-toggle="tooltip"
                               data-bs-title="Klicken Sie auf Anzeigen für vollständigen Inhalt">...</small>
                       </div>
@@ -109,11 +109,11 @@
                   </div>
                   {% if note.created_at %}
                     <small class="text-muted d-block mb-2">
-                      <span class="badge bg-light text-muted border fs-8">
+                      <span class="badge bg-body-secondary text-body-secondary border fs-8">
                         {{ note.created_at.strftime('%m/%d %H:%M') }}
                       </span>
                       {% if note.updated_at and note.updated_at != note.created_at %}
-                        <span class="badge bg-light text-success border fs-8">
+                        <span class="badge bg-body-secondary text-success border fs-8">
                           ↻ {{ note.updated_at.strftime('%m/%d %H:%M') }}
                         </span>
                       {% endif %}
