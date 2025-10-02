@@ -54,10 +54,12 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ PostgreSQL support (configurable via DATABASE_URL)
 - ✅ Database migrations with Flask-Migrate
 - ✅ CRUD operations for notes (Create, Read, Update, Delete)
+- ✅ Note archiving system (archive/unarchive notes with toggle view)
 - ✅ User authentication with Flask-Login (register, login, logout)
 - ✅ Google reCAPTCHA v2 integration for security
 - ✅ CSRF protection with Flask-WTF
 - ✅ User-specific notes (notes are private to each user)
+- ✅ Search functionality with pagination
 - ✅ Responsive Bootstrap UI with modal-based editing
 - ✅ Dark/Light theme toggle with system preference detection
 - ✅ Modern mobile navigation with offcanvas sidebar
@@ -138,10 +140,11 @@ python update_translations.py
 
 ## Next steps
 - ✅ Add note editing functionality
-- ✅ Add pagination and search.
-- ✅ Add real auth (Flask-Login or JWT) and CSRF-protected forms.
+- ✅ Add pagination and search
+- ✅ Add real auth (Flask-Login or JWT) and CSRF-protected forms
 - ✅ Add darkmode feature
 - ✅ Add multilanguage system
+- ✅ Add note archiving system
 - Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
-- Add screenshots/GIF to this README.
+- Add screenshots/GIF to this README
 

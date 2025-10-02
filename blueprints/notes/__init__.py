@@ -17,10 +17,11 @@ def index():
     """Render the index page with paginated notes for current user."""
     page = request.args.get('page', 1, type=int)
     search_query = request.args.get('search', '').strip()
+    show_archived = request.args.get('archived', 'false').lower() == 'true'
     per_page = 6
 
     # Build query with search filter for current user's notes only
-    query = Note.query.filter_by(user_id=current_user.id)
+    query = Note.query.filter_by(user_id=current_user.id).filter(Note.archived==show_archived)
     if search_query:
         query = query.filter(db.or_(Note.title.contains(search_query), Note.content.contains(search_query)))
 
@@ -36,6 +37,7 @@ def index():
         total_pages=pagination.pages,
         total_notes=pagination.total,
         search_query=search_query,
+        show_archived=show_archived,
         notes_form=notes_form
     )
 
@@ -98,4 +100,27 @@ def delete(note_id: int):
     db.session.commit()
     flash(translate('Note successfully deleted!'), 'success')
     return redirect(url_for("notes.index"))
+
+@bp.route("/archive/<int:note_id>/<int:archive>", methods=["POST"])
+@login_required
+def archive(note_id: int, archive: bool):
+    """Archive a note by its ID and redirect back to index."""
+    # Find note by ID, but only if it belongs to current user
+    note = db.session.get(Note, note_id)
+    if not note or note.user_id != current_user.id:
+        abort(404)
+    note.archived = archive
+    db.session.commit()
+    if archive:
+        flash(translate('Note successfully archived!'), 'success')
+    else:
+        flash(translate('Note successfully unarchived!'), 'success')
+
+    # Preserve current view parameters
+    search_query = request.args.get('search', '')
+    current_archived = request.args.get('archived', 'false').lower() == 'true'
+    page = request.args.get('page', 1, type=int)
+    redirect_archived = current_archived if archive else current_archived
+
+    return redirect(url_for("notes.index", search=search_query if search_query else None, archived=redirect_archived if redirect_archived else None, page=page))
 

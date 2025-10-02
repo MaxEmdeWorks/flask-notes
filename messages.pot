@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 23:49+0200\n"
+"POT-Creation-Date: 2025-10-02 23:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,16 +34,24 @@ msgstr ""
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: blueprints/notes/__init__.py:53
+#: blueprints/notes/__init__.py:55
 msgid "Note successfully created!"
 msgstr ""
 
-#: blueprints/notes/__init__.py:72
+#: blueprints/notes/__init__.py:74
 msgid "Note successfully updated!"
 msgstr ""
 
-#: blueprints/notes/__init__.py:99
+#: blueprints/notes/__init__.py:101
 msgid "Note successfully deleted!"
+msgstr ""
+
+#: blueprints/notes/__init__.py:115
+msgid "Note successfully archived!"
+msgstr ""
+
+#: blueprints/notes/__init__.py:117
+msgid "Note successfully unarchived!"
 msgstr ""
 
 #: models/forms.py:12
@@ -103,7 +111,7 @@ msgid "Username already taken. Please choose another one."
 msgstr ""
 
 #: models/forms.py:48 templates/notes/notes.html:18
-#: templates/notes/notes.html:196
+#: templates/notes/notes.html:214
 msgid "Title"
 msgstr ""
 
@@ -115,7 +123,7 @@ msgstr ""
 msgid "Title must be between 1 and 200 characters long."
 msgstr ""
 
-#: models/forms.py:52 templates/notes/notes.html:200
+#: models/forms.py:52 templates/notes/notes.html:218
 msgid "Content"
 msgstr ""
 
@@ -152,8 +160,8 @@ msgid "Logout"
 msgstr ""
 
 #: templates/base.html:87 templates/base.html:141
-#: templates/notes/notes.html:169 templates/notes/notes.html:176
-#: templates/notes/notes.html:189
+#: templates/notes/notes.html:187 templates/notes/notes.html:194
+#: templates/notes/notes.html:207
 msgid "Close"
 msgstr ""
 
@@ -197,67 +205,79 @@ msgstr ""
 msgid "Notes"
 msgstr ""
 
-#: templates/notes/notes.html:45
+#: templates/notes/notes.html:49
 msgid "Search notes..."
 msgstr ""
 
-#: templates/notes/notes.html:47
+#: templates/notes/notes.html:51
 msgid "Clear search"
 msgstr ""
 
-#: templates/notes/notes.html:61
+#: templates/notes/notes.html:66
+msgid "Archived Notes"
+msgstr ""
+
+#: templates/notes/notes.html:73
 msgid "Notes Pagination"
 msgstr ""
 
-#: templates/notes/notes.html:65 templates/notes/notes.html:67
+#: templates/notes/notes.html:77 templates/notes/notes.html:79
 msgid "Previous"
 msgstr ""
 
-#: templates/notes/notes.html:81 templates/notes/notes.html:83
+#: templates/notes/notes.html:93 templates/notes/notes.html:95
 msgid "Next"
 msgstr ""
 
-#: templates/notes/notes.html:106
+#: templates/notes/notes.html:114
+msgid "Unarchive Note"
+msgstr ""
+
+#: templates/notes/notes.html:114
+msgid "Archive Note"
+msgstr ""
+
+#: templates/notes/notes.html:124
 msgid "Click View for full content"
 msgstr ""
 
-#: templates/notes/notes.html:129
+#: templates/notes/notes.html:147
 msgid "View"
 msgstr ""
 
-#: templates/notes/notes.html:137
+#: templates/notes/notes.html:155
 msgid "Edit"
 msgstr ""
 
-#: templates/notes/notes.html:141
+#: templates/notes/notes.html:159
 msgid "Delete this note?"
 msgstr ""
 
-#: templates/notes/notes.html:142
+#: templates/notes/notes.html:160
 msgid "Delete"
 msgstr ""
 
-#: templates/notes/notes.html:154
+#: templates/notes/notes.html:172
 msgid "No notes available yet"
 msgstr ""
 
-#: templates/notes/notes.html:155
+#: templates/notes/notes.html:173
 msgid "Create your first note with the form on the left!"
 msgstr ""
 
-#: templates/notes/notes.html:168
+#: templates/notes/notes.html:186
 msgid "View Note"
 msgstr ""
 
-#: templates/notes/notes.html:177 templates/notes/notes.html:188
+#: templates/notes/notes.html:195 templates/notes/notes.html:206
 msgid "Edit Note"
 msgstr ""
 
-#: templates/notes/notes.html:204
+#: templates/notes/notes.html:222
 msgid "Cancel"
 msgstr ""
 
-#: templates/notes/notes.html:205
+#: templates/notes/notes.html:223
 msgid "Update Note"
 msgstr ""
 

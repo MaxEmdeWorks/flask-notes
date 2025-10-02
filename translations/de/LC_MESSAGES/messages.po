@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 23:49+0200\n"
+"POT-Creation-Date: 2025-10-02 23:48+0200\n"
 "PO-Revision-Date: 2025-09-29 22:08+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -35,17 +35,25 @@ msgstr "Registrierung erfolgreich! Sie können sich jetzt anmelden."
 msgid "You have been successfully logged out."
 msgstr "Sie wurden erfolgreich abgemeldet."
 
-#: blueprints/notes/__init__.py:53
+#: blueprints/notes/__init__.py:55
 msgid "Note successfully created!"
 msgstr "Notiz erfolgreich erstellt!"
 
-#: blueprints/notes/__init__.py:72
+#: blueprints/notes/__init__.py:74
 msgid "Note successfully updated!"
 msgstr "Notiz erfolgreich aktualisiert!"
 
-#: blueprints/notes/__init__.py:99
+#: blueprints/notes/__init__.py:101
 msgid "Note successfully deleted!"
 msgstr "Notiz erfolgreich gelöscht!"
+
+#: blueprints/notes/__init__.py:115
+msgid "Note successfully archived!"
+msgstr "Notiz erfolgreich archiviert!"
+
+#: blueprints/notes/__init__.py:117
+msgid "Note successfully unarchived!"
+msgstr "Notiz erfolgreich wiederhergestellt!"
 
 #: models/forms.py:12
 msgid "Username"
@@ -104,7 +112,7 @@ msgid "Username already taken. Please choose another one."
 msgstr "Benutzername bereits vergeben. Bitte wählen Sie einen anderen."
 
 #: models/forms.py:48 templates/notes/notes.html:18
-#: templates/notes/notes.html:196
+#: templates/notes/notes.html:214
 msgid "Title"
 msgstr "Titel"
 
@@ -116,7 +124,7 @@ msgstr "Titel ist erforderlich."
 msgid "Title must be between 1 and 200 characters long."
 msgstr "Titel muss zwischen 1 und 200 Zeichen lang sein."
 
-#: models/forms.py:52 templates/notes/notes.html:200
+#: models/forms.py:52 templates/notes/notes.html:218
 msgid "Content"
 msgstr "Inhalt"
 
@@ -153,8 +161,8 @@ msgid "Logout"
 msgstr "Ausloggen"
 
 #: templates/base.html:87 templates/base.html:141
-#: templates/notes/notes.html:169 templates/notes/notes.html:176
-#: templates/notes/notes.html:189
+#: templates/notes/notes.html:187 templates/notes/notes.html:194
+#: templates/notes/notes.html:207
 msgid "Close"
 msgstr "Schließen"
 
@@ -198,67 +206,79 @@ msgstr "Notiz hinzufügen"
 msgid "Notes"
 msgstr "Notizen"
 
-#: templates/notes/notes.html:45
+#: templates/notes/notes.html:49
 msgid "Search notes..."
 msgstr "Notizen durchsuchen..."
 
-#: templates/notes/notes.html:47
+#: templates/notes/notes.html:51
 msgid "Clear search"
 msgstr "Suche löschen"
 
-#: templates/notes/notes.html:61
+#: templates/notes/notes.html:66
+msgid "Archived Notes"
+msgstr "Archivierte Notizen"
+
+#: templates/notes/notes.html:73
 msgid "Notes Pagination"
 msgstr "Notizen-Navigation"
 
-#: templates/notes/notes.html:65 templates/notes/notes.html:67
+#: templates/notes/notes.html:77 templates/notes/notes.html:79
 msgid "Previous"
 msgstr "Zurück"
 
-#: templates/notes/notes.html:81 templates/notes/notes.html:83
+#: templates/notes/notes.html:93 templates/notes/notes.html:95
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/notes/notes.html:106
+#: templates/notes/notes.html:114
+msgid "Unarchive Note"
+msgstr "Notiz wiederherstellen"
+
+#: templates/notes/notes.html:114
+msgid "Archive Note"
+msgstr "Notiz archivieren"
+
+#: templates/notes/notes.html:124
 msgid "Click View for full content"
 msgstr "Auf Anzeigen klicken für vollständigen Inhalt"
 
-#: templates/notes/notes.html:129
+#: templates/notes/notes.html:147
 msgid "View"
 msgstr "Anzeigen"
 
-#: templates/notes/notes.html:137
+#: templates/notes/notes.html:155
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: templates/notes/notes.html:141
+#: templates/notes/notes.html:159
 msgid "Delete this note?"
 msgstr "Diese Notiz löschen?"
 
-#: templates/notes/notes.html:142
+#: templates/notes/notes.html:160
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/notes/notes.html:154
+#: templates/notes/notes.html:172
 msgid "No notes available yet"
 msgstr "Noch keine Notizen vorhanden"
 
-#: templates/notes/notes.html:155
+#: templates/notes/notes.html:173
 msgid "Create your first note with the form on the left!"
 msgstr "Erstellen Sie Ihre erste Notiz mit dem Formular links!"
 
-#: templates/notes/notes.html:168
+#: templates/notes/notes.html:186
 msgid "View Note"
 msgstr "Notiz anzeigen"
 
-#: templates/notes/notes.html:177 templates/notes/notes.html:188
+#: templates/notes/notes.html:195 templates/notes/notes.html:206
 msgid "Edit Note"
 msgstr "Notiz bearbeiten"
 
-#: templates/notes/notes.html:204
+#: templates/notes/notes.html:222
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: templates/notes/notes.html:205
+#: templates/notes/notes.html:223
 msgid "Update Note"
 msgstr "Notiz aktualisieren"
 
