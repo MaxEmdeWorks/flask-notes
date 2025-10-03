@@ -5,7 +5,7 @@ Handles all note-related operations (CRUD).
 from flask import Blueprint, render_template, request, redirect, url_for, abort, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext as translate
-from models.database import db, Note
+from models.database import db, Note, Category
 from models.forms import NoteForm
 
 # Create notes blueprint
@@ -18,6 +18,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     search_query = request.args.get('search', '').strip()
     show_archived = request.args.get('archived', 'false').lower() == 'true'
+    category_filter = request.args.get('category', type=int)
     per_page = 6
 
     # Build query with search filter for current user's notes only
@@ -25,11 +26,21 @@ def index():
     if search_query:
         query = query.filter(db.or_(Note.title.contains(search_query), Note.content.contains(search_query)))
 
+    # Apply category filter
+    if category_filter is not None:
+        if category_filter == 0:  # "No Category" filter
+            query = query.filter(Note.category_id.is_(None))
+        else:
+            query = query.filter(Note.category_id == category_filter)
+
     # Get paginated notes (using SQLAlchemy's built-in pagination)
     pagination = query.order_by(Note.updated_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
 
     # Create form for adding new notes
     notes_form = NoteForm()
+
+    # Get categories for filter dropdown
+    categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
 
     return render_template("notes/notes.html",
         notes=pagination.items,
@@ -38,6 +49,8 @@ def index():
         total_notes=pagination.total,
         search_query=search_query,
         show_archived=show_archived,
+        category_filter=category_filter,
+        categories=categories,
         notes_form=notes_form
     )
 
@@ -49,7 +62,8 @@ def add():
 
     if form.validate_on_submit():
         # Add new note to database for current user
-        new_note = Note(title=form.title.data, content=form.content.data, user_id=current_user.id)
+        category_id = form.category_id.data if form.category_id.data != 0 else None
+        new_note = Note(title=form.title.data, content=form.content.data, category_id=category_id, user_id=current_user.id)
         db.session.add(new_note)
         db.session.commit()
         flash(translate('Note successfully created!'), 'success')
@@ -70,6 +84,7 @@ def update(note_id: int):
         # Update note fields
         note.title = form.title.data
         note.content = form.content.data
+        note.category_id = form.category_id.data if form.category_id.data != 0 else None
         db.session.commit()
         flash(translate('Note successfully updated!'), 'success')
 
@@ -119,8 +134,9 @@ def archive(note_id: int, archive: bool):
     # Preserve current view parameters
     search_query = request.args.get('search', '')
     current_archived = request.args.get('archived', 'false').lower() == 'true'
+    category_filter = request.args.get('category', type=int)
     page = request.args.get('page', 1, type=int)
     redirect_archived = current_archived if archive else current_archived
 
-    return redirect(url_for("notes.index", search=search_query if search_query else None, archived=redirect_archived if redirect_archived else None, page=page))
+    return redirect(url_for("notes.index",search=search_query if search_query else None, archived=redirect_archived if redirect_archived else None, category=category_filter, page=page))
 

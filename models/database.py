@@ -21,8 +21,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=utc_now)
 
-    # Relationship to notes
+    # Relationship to notes and categories
     notes = db.relationship('Note', backref='user', lazy=True, cascade='all, delete-orphan')
+    categories = db.relationship('Category', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def set_password(self, password):
         """Set password hash."""
@@ -35,6 +36,31 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
 
+class Category(db.Model):
+    """Category model for organizing notes."""
+    __tablename__ = 'categories'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    color = db.Column(db.String(7), nullable=False, default='#007bff')  # Hex color code
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=utc_now)
+
+    # Relationship to notes
+    notes = db.relationship('Note', backref='category', lazy=True)
+
+    def __repr__(self):
+        return f'<Category {self.name}>'
+
+    def to_dict(self):
+        """Convert category object to dictionary for JSON serialization."""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'color': self.color,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
 class Note(db.Model):
     """Note model for storing user notes in the database."""
     __tablename__ = 'notes'
@@ -43,6 +69,7 @@ class Note(db.Model):
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
     archived = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=utc_now)
     updated_at = db.Column(db.DateTime, default=utc_now, onupdate=utc_now)
@@ -56,6 +83,8 @@ class Note(db.Model):
             'id': self.id,
             'title': self.title,
             'content': self.content,
+            'category_id': self.category_id,
+            'category': self.category.to_dict() if self.category else None,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
