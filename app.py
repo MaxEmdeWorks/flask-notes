@@ -7,9 +7,10 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_babel import Babel, gettext
-
+from flask_limiter.errors import RateLimitExceeded
 from models.database import db, User
 from models import db_utils
+from models.limiter import limiter, rate_limit_handler
 
 import blueprints
 
@@ -45,22 +46,20 @@ def create_app(config=None):
     # Initialize extensions
     db.init_app(app)
     Migrate(app, db)  # Initialize Flask-Migrate
-    db_utils.init_app(app)
+    db_utils.init_app(app)  # Initialize database utilities
+    limiter.init_app(app)  # Initialize rate limiter
+
+    # Register rate limit error handler
+    app.register_error_handler(RateLimitExceeded, rate_limit_handler)
 
     # User language preference
     def get_locale():
         """Select the best match for supported languages."""
-        # If user is logged in, use their preferred language
-        if current_user.is_authenticated and hasattr(current_user, 'get_language'):
-            user_lang = current_user.get_language()
-            if user_lang and user_lang in app.config['LANGUAGES']:
-                return user_lang
-
-        # Check if language is set in session
+        # Check if language is set in session (primary source)
         if 'language' in session and session['language'] in app.config['LANGUAGES']:
             return session['language']
 
-        # Use browser's preferred language
+        # Use browser's preferred language as fallback
         return request.accept_languages.best_match(app.config['LANGUAGES']) or app.config['BABEL_DEFAULT_LOCALE']
 
     # Initialize Babel with locale_selector
@@ -107,16 +106,18 @@ def create_app(config=None):
 
     # Language switching route
     @app.route('/set_language/<language>')
+    @limiter.exempt
     def set_language(language=None):
-        """Set user's preferred language."""
+        """Set user's preferred language in session."""
         if language in app.config['LANGUAGES']:
             session['language'] = language
-            # If user is logged in, save to database
-            if current_user.is_authenticated:
-                current_user.set_language(language)
-                db.session.commit()
-        # Redirect back to referring page or home
-        return redirect(request.referrer or url_for('index'))
+        # Redirect back to referring page, but avoid loops
+        referrer = request.referrer
+        if referrer and not referrer.endswith(f'/set_language/{language}'):
+            return redirect(referrer)
+        else:
+            # Fallback to home if no safe referrer
+            return redirect(url_for('index'))
 
     # Default route - redirect to notes if authenticated, otherwise to login
     @app.route('/')

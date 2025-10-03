@@ -24,6 +24,11 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
    # For local development, add 'localhost' or '127.0.0.1' to allowed domains
    # Set RECAPTCHA_PUBLIC_KEY and RECAPTCHA_PRIVATE_KEY in .env
 
+   # Configure rate limiting in .env
+   # FLASK_LIMITER_ENABLED=True
+   # FLASK_LIMITER_DEFAULT_LIMIT="30 per minute"
+   # FLASK_LIMITER_STORAGE_URI="memory://"
+
    # Uses SQLite by default (sqlite:///notes.db)
    # For PostgreSQL: Set DATABASE_URL=postgresql://postgres:dev@localhost:5432/notes
 
@@ -64,8 +69,24 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ Dark/Light theme toggle with system preference detection
 - ✅ Modern mobile navigation with offcanvas sidebar
 - ✅ Internationalization (i18n) with Flask-Babel (English/German)
+- ✅ Rate limiting with Flask-Limiter (configurable, smart timer)
+- ✅ Custom rate limit error page with countdown timer
+- ✅ Session-based language switching
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
+
+## Rate Limiting
+
+Intelligent rate limiting with Flask-Limiter:
+- Smart timer that doesn't reset on page refresh
+- Custom error page with countdown
+- Configurable via `.env` variables
+
+```bash
+FLASK_LIMITER_ENABLED=True
+FLASK_LIMITER_DEFAULT_LIMIT="100 per minute"
+FLASK_LIMITER_STORAGE_URI="memory://"
+```
 
 ## Database Commands
 ```bash
@@ -145,6 +166,9 @@ python update_translations.py
 - ✅ Add darkmode feature
 - ✅ Add multilanguage system
 - ✅ Add note archiving system
+- ✅ Add rate limiting with smart timer
+- Add note categories and folders for better organization
+- Add Redis support for rate limiting in production
 - Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
 - Add screenshots/GIF to this README
 

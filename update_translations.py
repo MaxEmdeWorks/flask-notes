@@ -42,14 +42,57 @@ def init_language(lang):
     return run_command(command, f"Initializing {lang.upper()} translations")
 
 def update_language(lang):
-    """Update an existing language"""
-    command = f"pybabel update -i {POT_FILE} -d {TRANSLATIONS_DIR} -l {lang}"
-    return run_command(command, f"Updating {lang.upper()} translations")
+    """Update an existing language and remove obsolete strings"""
+    command = f"pybabel update -i {POT_FILE} -d {TRANSLATIONS_DIR} -l {lang} --ignore-obsolete"
+    return run_command(command, f"Updating {lang.upper()} translations and removing obsolete strings")
 
 def compile_language(lang):
     """Compile a language to .mo files"""
     command = f"pybabel compile -d {TRANSLATIONS_DIR} -l {lang}"
     return run_command(command, f"Compiling {lang.upper()} translations")
+
+def cleanup_obsolete_strings(lang):
+    """Remove obsolete strings from .po files"""
+    po_file = Path(TRANSLATIONS_DIR) / lang / "LC_MESSAGES" / "messages.po"
+    
+    if not po_file.exists():
+        return False
+        
+    print(f"\n[INFO] Cleaning up obsolete strings in {lang.upper()}")
+    
+    try:
+        with open(po_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Remove obsolete entries (marked with #~ )
+        lines = content.split('\n')
+        cleaned_lines = []
+        skip_obsolete = False
+        
+        for line in lines:
+            if line.startswith('#~ '):
+                skip_obsolete = True
+                continue
+            elif skip_obsolete and (line.startswith('msgid') or line.startswith('msgstr') or line.startswith('"')):
+                if not line.strip():
+                    skip_obsolete = False
+                continue
+            else:
+                skip_obsolete = False
+                cleaned_lines.append(line)
+        
+        # Write cleaned content back
+        cleaned_content = '\n'.join(cleaned_lines)
+        
+        with open(po_file, 'w', encoding='utf-8') as f:
+            f.write(cleaned_content)
+            
+        print(f"[SUCCESS] Obsolete strings removed from {lang.upper()}")
+        return True
+        
+    except Exception as e:
+        print(f"[ERROR] Failed to clean up obsolete strings: {e}")
+        return False
 
 def language_exists(lang):
     """Check if a language file already exists"""
@@ -86,6 +129,9 @@ def main():
             if not init_language(lang):
                 print(f"[ERROR] Failed to initialize {lang}!")
                 continue
+
+        # Clean up obsolete strings
+        cleanup_obsolete_strings(lang)
 
         # Compile translations
         if not compile_language(lang):

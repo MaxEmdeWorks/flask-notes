@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Alert Box -->
+            <div class="alert alert-warning border-0 shadow-sm text-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-1 text-warning mb-3"></i>
+                <h4 class="alert-heading fw-bold">
+                    {{ translate("Rate Limit Exceeded") }}
+                </h4>
+                <p class="mb-0">
+                    {{ translate("You've made too many requests. Please wait before trying again.") }}
+                </p>
+            </div>
+
+            <!-- Rate Limit Info -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        {{ translate("Rate Limit Information") }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong class="text-muted">{{ translate("Limit:") }}</strong><br>
+                            <span>{{ translate("Multiple requests per minute") }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong class="text-muted">{{ translate("Reset Time:") }}</strong><br>
+                            <span>
+                                {{ reset_time }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="text-center">
+                        <div class="badge bg-primary fs-6 p-2">
+                            <i class="bi bi-clock me-2"></i>
+                            {{ translate("Try again in:") }}
+                            <span id="countdown" class="fw-bold">{{ retry_after }}</span> {{ translate("seconds") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                {% if retry_after > 0 %}
+                <button id="retryButton" class="btn btn-secondary btn-lg" disabled>
+                    <i class="bi bi-hourglass-split me-2"></i>
+                    {{ translate("Try Again") }} (<span id="buttonCountdown">{{ retry_after }}</span>s)
+                </button>
+                {% else %}
+                <button class="btn btn-primary btn-lg" onclick="window.location.reload()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+                    {{ translate("Try Again") }}
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Accordion -->
+            <div class="accordion mt-4" id="tipsAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#tipsCollapse">
+                            <i class="bi bi-lightbulb me-2"></i>
+                            {{ translate("Tips to Avoid Rate Limits") }}
+                        </button>
+                    </h2>
+                    <div id="tipsCollapse" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item border-0 px-0">
+                                    <i class="bi bi-info-circle text-primary me-2"></i>
+                                    {{ translate("Too many requests per minute - please slow down") }}
+                                </li>
+                                <li class="list-group-item border-0 px-0">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    {{ translate("Avoid refreshing the page repeatedly") }}
+                                </li>
+                                <li class="list-group-item border-0 px-0">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    {{ translate("Use the application normally without automation") }}
+                                </li>
+                                <li class="list-group-item border-0 px-0">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    {{ translate("Contact support if you think this is an error") }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let timeLeft = {{ retry_after | tojson }};
+
+        const updateCountdown = () => {
+            $('#countdown, #buttonCountdown').text(timeLeft);
+        };
+
+        if (timeLeft > 0) {
+            const timer = setInterval(() => {
+                updateCountdown();
+                if (--timeLeft <= 0) {
+                    clearInterval(timer);
+                    $('#countdown').text('0');
+                    $('#retryButton')
+                        .prop('disabled', false)
+                        .removeClass('btn-secondary').addClass('btn-success')
+                        .html('<i class="bi bi-arrow-clockwise me-2"></i>{{ translate("Try Again") }}')
+                        .click(() => location.reload());
+                }
+            }, 1000);
+        }
+    });
+</script>
+{% endblock %}

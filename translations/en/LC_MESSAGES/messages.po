@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-02 23:48+0200\n"
+"POT-Creation-Date: 2025-10-03 05:10+0200\n"
 "PO-Revision-Date: 2025-09-29 21:57+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,20 +18,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/auth/__init__.py:46
+#: blueprints/auth/__init__.py:43
 #, python-format
 msgid "Welcome back, %(username)s!"
 msgstr ""
 
-#: blueprints/auth/__init__.py:49
+#: blueprints/auth/__init__.py:46
 msgid "Invalid username or password."
 msgstr ""
 
-#: blueprints/auth/__init__.py:70
+#: blueprints/auth/__init__.py:68
 msgid "Registration successful! You can now log in."
 msgstr ""
 
-#: blueprints/auth/__init__.py:80
+#: blueprints/auth/__init__.py:78
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -190,6 +190,63 @@ msgstr ""
 msgid "At least 6 characters."
 msgstr ""
 
+#: templates/errors/rate_limit.html:11
+msgid "Rate Limit Exceeded"
+msgstr ""
+
+#: templates/errors/rate_limit.html:14
+msgid "You've made too many requests. Please wait before trying again."
+msgstr ""
+
+#: templates/errors/rate_limit.html:23
+msgid "Rate Limit Information"
+msgstr ""
+
+#: templates/errors/rate_limit.html:29
+msgid "Limit:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:30
+msgid "Multiple requests per minute"
+msgstr ""
+
+#: templates/errors/rate_limit.html:33
+msgid "Reset Time:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:44
+msgid "Try again in:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:45
+msgid "seconds"
+msgstr ""
+
+#: templates/errors/rate_limit.html:56 templates/errors/rate_limit.html:61
+#: templates/errors/rate_limit.html:121
+msgid "Try Again"
+msgstr ""
+
+#: templates/errors/rate_limit.html:73
+msgid "Tips to Avoid Rate Limits"
+msgstr ""
+
+#: templates/errors/rate_limit.html:81
+msgid "Too many requests per minute - please slow down"
+msgstr ""
+
+#: templates/errors/rate_limit.html:85
+msgid "Avoid refreshing the page repeatedly"
+msgstr ""
+
+#: templates/errors/rate_limit.html:89
+msgid "Use the application normally without automation"
+msgstr ""
+
+#: templates/errors/rate_limit.html:93
+msgid "Contact support if you think this is an error"
+msgstr ""
+
 #: templates/notes/notes.html:12
 msgid "Create Note"
 msgstr ""
@@ -281,187 +338,4 @@ msgstr ""
 #: templates/notes/notes.html:223
 msgid "Update Note"
 msgstr ""
-
-#~ msgid "Username"
-#~ msgstr ""
-
-#~ msgid "Username is required."
-#~ msgstr ""
-
-#~ msgid "Username must be between 3 and 80 characters long."
-#~ msgstr ""
-
-#~ msgid "Password"
-#~ msgstr ""
-
-#~ msgid "Password is required."
-#~ msgstr ""
-
-#~ msgid "Username*"
-#~ msgstr ""
-
-#~ msgid "Password*"
-#~ msgstr ""
-
-#~ msgid "Password must be at least 6 characters long."
-#~ msgstr ""
-
-#~ msgid "Confirm Password*"
-#~ msgstr ""
-
-#~ msgid "Please confirm your password."
-#~ msgstr ""
-
-#~ msgid "Passwords must match."
-#~ msgstr ""
-
-#~ msgid "Username already taken. Please choose another one."
-#~ msgstr ""
-
-#~ msgid "Title is required."
-#~ msgstr ""
-
-#~ msgid "Title must be between 1 and 200 characters long."
-#~ msgstr ""
-
-#~ msgid "Content is required."
-#~ msgstr ""
-
-#~ msgid "Content cannot be empty."
-#~ msgstr ""
-
-#~ msgid "Save"
-#~ msgstr ""
-
-#~ msgid "Welcome back, %(username)s!"
-#~ msgstr ""
-
-#~ msgid "Invalid username or password."
-#~ msgstr ""
-
-#~ msgid "Registration successful! You can now log in."
-#~ msgstr ""
-
-#~ msgid "You have been successfully logged out."
-#~ msgstr ""
-
-#~ msgid "Note successfully created!"
-#~ msgstr ""
-
-#~ msgid "Note successfully updated!"
-#~ msgstr ""
-
-#~ msgid "Note successfully deleted!"
-#~ msgstr ""
-
-#~ msgid "Dashboard"
-#~ msgstr ""
-
-#~ msgid "Toggle Dark Mode"
-#~ msgstr ""
-
-#~ msgid "Language"
-#~ msgstr ""
-
-#~ msgid "English"
-#~ msgstr ""
-
-#~ msgid "German"
-#~ msgstr ""
-
-#~ msgid "Logout"
-#~ msgstr ""
-
-#~ msgid "Close"
-#~ msgstr ""
-
-#~ msgid "Dark Mode"
-#~ msgstr ""
-
-#~ msgid "Built with Flask and Bootstrap"
-#~ msgstr ""
-
-#~ msgid "GitHub Profile"
-#~ msgstr ""
-
-#~ msgid "Repository"
-#~ msgstr ""
-
-#~ msgid "Login"
-#~ msgstr ""
-
-#~ msgid "Register"
-#~ msgstr ""
-
-#~ msgid "3-80 characters, only letters, numbers and underscores."
-#~ msgstr ""
-
-#~ msgid "At least 6 characters."
-#~ msgstr ""
-
-#~ msgid "Create Note"
-#~ msgstr ""
-
-#~ msgid "Title"
-#~ msgstr ""
-
-#~ msgid "Write your note here..."
-#~ msgstr ""
-
-#~ msgid "Add Note"
-#~ msgstr ""
-
-#~ msgid "Notes"
-#~ msgstr ""
-
-#~ msgid "Search notes..."
-#~ msgstr ""
-
-#~ msgid "Clear search"
-#~ msgstr ""
-
-#~ msgid "Notes Pagination"
-#~ msgstr ""
-
-#~ msgid "Previous"
-#~ msgstr ""
-
-#~ msgid "Next"
-#~ msgstr ""
-
-#~ msgid "Click View for full content"
-#~ msgstr ""
-
-#~ msgid "View"
-#~ msgstr ""
-
-#~ msgid "Edit"
-#~ msgstr ""
-
-#~ msgid "Delete this note?"
-#~ msgstr ""
-
-#~ msgid "Delete"
-#~ msgstr ""
-
-#~ msgid "No notes available yet"
-#~ msgstr ""
-
-#~ msgid "Create your first note with the form on the left!"
-#~ msgstr ""
-
-#~ msgid "View Note"
-#~ msgstr ""
-
-#~ msgid "Edit Note"
-#~ msgstr ""
-
-#~ msgid "Content"
-#~ msgstr ""
-
-#~ msgid "Cancel"
-#~ msgstr ""
-
-#~ msgid "Update Note"
-#~ msgstr ""
 

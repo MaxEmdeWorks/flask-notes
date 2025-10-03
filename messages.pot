@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-02 23:48+0200\n"
+"POT-Creation-Date: 2025-10-03 05:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/auth/__init__.py:46
+#: blueprints/auth/__init__.py:43
 #, python-format
 msgid "Welcome back, %(username)s!"
 msgstr ""
 
-#: blueprints/auth/__init__.py:49
+#: blueprints/auth/__init__.py:46
 msgid "Invalid username or password."
 msgstr ""
 
-#: blueprints/auth/__init__.py:70
+#: blueprints/auth/__init__.py:68
 msgid "Registration successful! You can now log in."
 msgstr ""
 
-#: blueprints/auth/__init__.py:80
+#: blueprints/auth/__init__.py:78
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -187,6 +187,63 @@ msgstr ""
 
 #: templates/auth/auth.html:113
 msgid "At least 6 characters."
+msgstr ""
+
+#: templates/errors/rate_limit.html:11
+msgid "Rate Limit Exceeded"
+msgstr ""
+
+#: templates/errors/rate_limit.html:14
+msgid "You've made too many requests. Please wait before trying again."
+msgstr ""
+
+#: templates/errors/rate_limit.html:23
+msgid "Rate Limit Information"
+msgstr ""
+
+#: templates/errors/rate_limit.html:29
+msgid "Limit:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:30
+msgid "Multiple requests per minute"
+msgstr ""
+
+#: templates/errors/rate_limit.html:33
+msgid "Reset Time:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:44
+msgid "Try again in:"
+msgstr ""
+
+#: templates/errors/rate_limit.html:45
+msgid "seconds"
+msgstr ""
+
+#: templates/errors/rate_limit.html:56 templates/errors/rate_limit.html:61
+#: templates/errors/rate_limit.html:121
+msgid "Try Again"
+msgstr ""
+
+#: templates/errors/rate_limit.html:73
+msgid "Tips to Avoid Rate Limits"
+msgstr ""
+
+#: templates/errors/rate_limit.html:81
+msgid "Too many requests per minute - please slow down"
+msgstr ""
+
+#: templates/errors/rate_limit.html:85
+msgid "Avoid refreshing the page repeatedly"
+msgstr ""
+
+#: templates/errors/rate_limit.html:89
+msgid "Use the application normally without automation"
+msgstr ""
+
+#: templates/errors/rate_limit.html:93
+msgid "Contact support if you think this is an error"
 msgstr ""
 
 #: templates/notes/notes.html:12

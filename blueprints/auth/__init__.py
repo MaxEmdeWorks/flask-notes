@@ -2,11 +2,12 @@
 Authentication Blueprint for Flask Notes app.
 Handles user login, registration, and logout.
 """
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as translate
 from models.database import db, User
 from models.forms import LoginForm, RegistrationForm
+from models.limiter import limiter
 
 # Create auth blueprint
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -20,6 +21,7 @@ def auth_index():
     return redirect(url_for('auth.login'))
 
 @bp.route("/login", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
 def login():
     """Login page and handling."""
     # Redirect authenticated users to notes page
@@ -37,11 +39,6 @@ def login():
         if user and user.check_password(password):
             login_user(user)
 
-            # Save session language to database if different
-            if 'language' in session and session['language'] != user.get_language():
-                user.set_language(session['language'])
-                db.session.commit()
-
             next_page = request.args.get('next')
             flash(translate("Welcome back, %(username)s!", username=user.username), 'success')
             return redirect(next_page) if next_page else redirect(url_for('notes.index'))
@@ -51,6 +48,7 @@ def login():
     return render_template("auth/auth.html", login_form=login_form, register_form=register_form, tab='login')
 
 @bp.route("/register", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
 def register():
     """Registration page and handling."""
     # Redirect authenticated users to notes page
