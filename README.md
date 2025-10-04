@@ -65,6 +65,8 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ CSRF protection with Flask-WTF
 - ✅ User-specific notes (notes are private to each user)
 - ✅ Search functionality with pagination
+- ✅ Note categories with color-coding and filtering
+- ✅ Category management with CRUD operations
 - ✅ Responsive Bootstrap UI with modal-based editing
 - ✅ Dark/Light theme toggle with system preference detection
 - ✅ Modern mobile navigation with offcanvas sidebar
@@ -74,6 +76,7 @@ A minimal Flask app that demonstrates auth placeholder, CRUD notes, pagination-r
 - ✅ Session-based language switching
 - ✅ Comprehensive unit tests with pytest
 - ✅ Custom CLI commands for database management
+- ✅ Bootstrap tooltips
 
 ## Rate Limiting
 
@@ -167,7 +170,7 @@ python update_translations.py
 - ✅ Add multilanguage system
 - ✅ Add note archiving system
 - ✅ Add rate limiting with smart timer
-- Add note categories and folders for better organization
+- ✅ Add note categories for better organization
 - Add Redis support for rate limiting in production
 - Add admin panel to manage users, view all notes, and display statistics (total users, total notes, and more)
 - Add screenshots/GIF to this README

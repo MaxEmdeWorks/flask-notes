@@ -21,18 +21,7 @@ $(document).ready(function() {
     // Apply theme to the page
     function applyTheme(theme) {
         $html.attr('data-bs-theme', theme);
-
-        // Update desktop icons
         $icon.removeClass('bi-moon bi-sun').addClass(theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon');
-
-        // Update mobile icons and text
-        var $mobileIcon = $('#darkModeIconMobile');
-        var $mobileText = $('#darkModeTextMobile');
-        if ($mobileIcon.length) {
-            $mobileIcon.removeClass('bi-moon bi-sun').addClass(theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon');
-            $mobileText.text(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
-        }
-
         saveTheme(theme);
     }
 

@@ -19,14 +19,23 @@
           </div>
           <div class="mb-2">
             {{ notes_form.category_id.label(class="form-label mb-1") }}
-            {{ notes_form.category_id(class="form-select form-select-sm") }}
+            <select class="form-select form-select-sm" name="category_id" id="category_id">
+              <option value="0">{{ translate('No Category') }}</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" data-color="{{ category.color }}">
+                  {{ category.name }}
+                </option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-2 flex-grow-1 d-flex flex-column">
             {{ notes_form.content.label(class="form-label mb-1") }}
             {{ notes_form.content(class="form-control form-control-sm flex-grow-1 resize-none", placeholder=translate('Write your note here...'), rows="1") }}
           </div>
           <div class="mt-auto pt-2">
-            <button type="submit" class="btn btn-primary btn-sm w-100">{{ translate('Add Note') }}</button>
+            <button type="submit" class="btn btn-primary btn-sm w-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ translate('Create a new note') }}">
+              {{ translate('Add Note') }}
+            </button>
           </div>
         </form>
       </div>
@@ -52,11 +61,11 @@
           <div class="input-group input-group-sm">
             <input class="form-control" type="search" name="search" id="searchInput" placeholder="{{ translate('Search notes...') }}" value="{{ search_query or '' }}">
             {% if search_query %}
-            <button class="btn btn-outline-secondary" type="button" id="clearSearch" title="{{ translate('Clear search') }}">
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch" title="{{ translate('Clear search') }}" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="{{ translate('Clear search') }}">
               <i class="bi bi-x-lg"></i>
             </button>
             {% endif %}
-            <button class="btn btn-outline-secondary" type="submit">
+            <button class="btn btn-outline-secondary" type="submit" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="{{ translate('Start search') }}">
               <i class="bi bi-search"></i>
             </button>
           </div>
@@ -133,7 +142,10 @@
                 <div class="card-body d-flex flex-column p-3 position-relative">
                   <form method="post" action="{{ url_for('notes.archive', note_id=note.id, archive=not note.archived, search=search_query, archived=show_archived, page=current_page) }}">
                     {{ notes_form.hidden_tag() }}
-                    <button type="submit" class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2" title="{{ translate('Unarchive Note') if note.archived else translate('Archive Note') }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="left"
+                            data-bs-title="{{ translate('Unarchive Note') if note.archived else translate('Archive Note') }}">
                       <i class="bi bi-{{ 'arrow-counterclockwise' if note.archived else 'archive' }}"></i>
                     </button>
                   </form>
@@ -168,26 +180,23 @@
                   {% endif %}
                   <div class="d-flex gap-2 mt-auto">
                     <button type="button" class="btn btn-outline-secondary btn-sm flex-fill"
-                            data-bs-toggle="modal"
-                            data-bs-target="#viewModal"
-                            data-note-id="{{ note.id }}"
-                            data-note-title="{{ note.title | e }}"
-                            data-note-content="{{ note.content | e }}"
-                            data-note-category="{{ note.category_id or 0 }}">
+                            data-bs-toggle="modal" data-bs-target="#viewModal" data-note-id="{{ note.id }}"
+                            data-note-title="{{ note.title | e }}" data-note-content="{{ note.content | e }}" data-note-category="{{ note.category_id or 0 }}"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ translate('View full note content') }}">
                       <i class="bi bi-eye"></i> {{ translate('View') }}
                     </button>
                     <button type="button" class="btn btn-outline-primary btn-sm flex-fill"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal"
-                            data-note-id="{{ note.id }}"
-                            data-note-title="{{ note.title | e }}"
-                            data-note-content="{{ note.content | e }}"
-                            data-note-category="{{ note.category_id or 0 }}">
+                            data-bs-toggle="modal" data-bs-target="#editModal" data-note-id="{{ note.id }}"
+                            data-note-title="{{ note.title | e }}" data-note-content="{{ note.content | e }}" data-note-category="{{ note.category_id or 0 }}"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ translate('Edit this note') }}">
                       <i class="bi bi-pencil"></i> {{ translate('Edit') }}
                     </button>
                     <form method="post" action="{{ url_for('notes.delete', note_id=note.id) }}" class="flex-fill">
                       {{ notes_form.hidden_tag() }}
-                      <button type="submit" class="btn btn-outline-danger btn-sm w-100" data-confirm-message="{{ translate('Delete this note?') }}" onclick="return confirm(this.getAttribute('data-confirm-message'))">
+                      <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                              data-confirm-message="{{ translate('Delete this note?') }}"
+                              data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ translate('Permanently delete this note') }}"
+                              onclick="return confirm(this.getAttribute('data-confirm-message'))">
                         <i class="bi bi-trash"></i> {{ translate('Delete') }}
                       </button>
                     </form>
@@ -237,7 +246,7 @@
         <h1 class="modal-title fs-5" id="editModalLabel">{{ translate('Edit Note') }}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ translate('Close') }}"></button>
       </div>
-      <form method="post" id="editForm" action="">
+      <form method="post" id="editForm" action="" data-update-url="{{ url_for('notes.update', note_id=0) }}">
         {{ notes_form.hidden_tag() }}
         <div class="modal-body">
           <div class="mb-3">
@@ -246,7 +255,14 @@
           </div>
           <div class="mb-3">
             {{ notes_form.category_id.label(class="form-label") }}
-            {{ notes_form.category_id(class="form-select", id="editNoteCategory") }}
+            <select class="form-select" name="category_id" id="editNoteCategory">
+              <option value="0">{{ translate('No Category') }}</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" data-color="{{ category.color }}">
+                  {{ category.name }}
+                </option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-3">
             {{ notes_form.content.label(class="form-label") }}
@@ -262,100 +278,8 @@
   </div>
 </div>
 
-<script>
-$(document).ready(function() {
-  const NoteApp = {
-    currentNote: {},
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notes.js') }}"></script>
+{% endblock %}
 
-    // Initialize all modal handlers
-    init() {
-      this.bindViewModal();
-      this.bindEditModal();
-      this.bindEditFromView();
-      this.bindClearSearch();
-      this.bindArchivedToggle();
-      this.bindCategoryFilter();
-      $('[data-bs-toggle="tooltip"]').tooltip();
-    },
-
-    // Extract note data from button element
-    extractNoteData($button) {
-      return {
-        id: $button.data('note-id'),
-        title: $button.data('note-title'),
-        content: $button.data('note-content'),
-        category: $button.data('note-category')
-      };
-    },
-
-    // Populate edit modal with note data
-    populateEditModal(noteData) {
-      $('#editForm').attr('action', `{{ url_for('notes.update', note_id=0) }}`.replace('0', noteData.id));
-      $('#editNoteTitle').val(noteData.title);
-      $('#editNoteContent').val(noteData.content);
-      $('#editNoteCategory').val(noteData.category || 0);
-    },
-
-    // Handle view modal display
-    bindViewModal() {
-      $('#viewModal').on('show.bs.modal', (event) => {
-        const noteData = this.extractNoteData($(event.relatedTarget));
-        this.currentNote = noteData;
-        $('#viewNoteTitle').text(noteData.title);
-        $('#viewNoteContent').text(noteData.content);
-      });
-    },
-
-    // Handle direct edit modal
-    bindEditModal() {
-      $('#editModal').on('show.bs.modal', (event) => {
-        const $button = $(event.relatedTarget);
-        if ($button.length) {
-          this.populateEditModal(this.extractNoteData($button));
-        }
-      });
-    },
-
-    // Handle edit from view modal
-    bindEditFromView() {
-      $('#editFromView').on('click', () => {
-        $('#viewModal').modal('hide');
-        setTimeout(() => {
-          this.populateEditModal(this.currentNote);
-          $('#editModal').modal('show');
-        }, 300);
-      });
-    },
-
-    // Handle clear search functionality
-    bindClearSearch() {
-      $('#clearSearch').on('click', () => {
-        // Clear search and redirect to home
-        window.location.href = '{{ url_for("notes.index") }}';
-      });
-    },
-
-    // Handle archived notes toggle
-    bindArchivedToggle() {
-      $('#archivedToggle').on('change', function() {
-        const isChecked = $(this).is(':checked');
-        const currentUrl = new URL(window.location);
-        currentUrl.searchParams.set('archived', isChecked);
-        currentUrl.searchParams.set('page', '1'); // Reset to first page
-        window.location.href = currentUrl.toString();
-      });
-    },
-
-    // Handle category filter
-    bindCategoryFilter() {
-      $('#categoryFilter').on('change', function() {
-        $('#categoryFilterForm').submit();
-      });
-    }
-  };
-
-  // Initialize the application
-  NoteApp.init();
-});
-</script>
 {% endblock %}

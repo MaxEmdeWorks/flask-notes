@@ -138,5 +138,5 @@ def archive(note_id: int, archive: bool):
     page = request.args.get('page', 1, type=int)
     redirect_archived = current_archived if archive else current_archived
 
-    return redirect(url_for("notes.index",search=search_query if search_query else None, archived=redirect_archived if redirect_archived else None, category=category_filter, page=page))
+    return redirect(url_for("notes.index", search=search_query if search_query else None, archived=redirect_archived if redirect_archived else None, category=category_filter, page=page))
 

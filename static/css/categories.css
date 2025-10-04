@@ -1,0 +1,5 @@
+/* Categories page specific styles */
+[data-bs-theme="dark"] .color-option.border-light,
+[data-bs-theme="dark"] .edit-color-option.border-light {
+    border-color: #fff !important;
+}
